@@ -42,15 +42,9 @@ export default function AthleteRegistration() {
   };
 
   useEffect(() => {
-    const session = getAuthSession();
-    if (session && session.route === 'athlete') {
-      setAuthenticated(true);
-      setAadhaarRef(session.aadhaarRef);
-      // Check for existing flagged record
-      checkExistingRecord(session.aadhaarRef);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+    // Clear any previous auth session so user always starts fresh
+    setAuthSession(null);
+  }, []);
 
   const handleAuthSuccess = async (ref: string) => {
     setAadhaarRef(ref);

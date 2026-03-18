@@ -45,12 +45,8 @@ export default function OthersRegistration() {
   };
 
   useEffect(() => {
-    const session = getAuthSession();
-    if (session && session.route === 'others') {
-      setAuthenticated(true);
-      setAadhaarRef(session.aadhaarRef);
-      if (session.category) setSelectedCategory(session.category as 'Support Staff' | 'Technical Official');
-    }
+    // Clear any previous auth session so user always starts fresh
+    setAuthSession(null);
   }, []);
 
   const handleAuthSuccess = async (ref: string) => {
