@@ -26,13 +26,12 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'gms-app/package-lock.json'
 
       - name: Install dependencies
-        run: cd gms-app && npm ci
+        run: npm ci
 
       - name: Build
-        run: cd gms-app && npm run build
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -40,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'gms-app/out'
+          path: 'out'
 
   deploy:
     environment:
