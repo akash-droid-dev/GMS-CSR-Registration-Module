@@ -1,0 +1,296 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#e8f0fe"/>
+    </linearGradient>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#2d5a8e"/>
+    </linearGradient>
+    <linearGradient id="startGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="processGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="adminGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7"/>
+      <stop offset="100%" style="stop-color:#fde68a"/>
+    </linearGradient>
+    <linearGradient id="endGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#4f46e5"/>
+    </linearGradient>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e3a5f" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowHead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowHeadRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrowHeadGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="url(#bgGrad)" rx="0"/>
+
+  <!-- Header Bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="url(#headerGrad)"/>
+  <text x="40" y="35" fill="#fbbf24" font-size="18" font-weight="700">GMS</text>
+  <text x="80" y="35" fill="#ffffff" font-size="15" font-weight="500">Games Management System — User Flow Diagram</text>
+  <text x="1160" y="35" fill="#94a3b8" font-size="11" text-anchor="end">CSR Registration Module v3.0</text>
+
+  <!-- Legend -->
+  <g transform="translate(860, 75)">
+    <rect x="0" y="0" width="310" height="110" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <text x="15" y="22" font-size="11" font-weight="700" fill="#334155">LEGEND</text>
+    <rect x="15" y="32" width="14" height="14" rx="7" fill="url(#startGrad)"/>
+    <text x="35" y="43" font-size="10" fill="#475569">Start / End</text>
+    <rect x="15" y="52" width="14" height="14" rx="3" fill="white" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="35" y="63" font-size="10" fill="#475569">User Action</text>
+    <rect x="15" y="72" width="14" height="14" rx="3" fill="url(#adminGrad)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="35" y="83" font-size="10" fill="#475569">Admin Action</text>
+    <polygon points="165,39 175,32 185,39 175,46" fill="white" stroke="#64748b" stroke-width="1.5"/>
+    <text x="192" y="43" font-size="10" fill="#475569">Decision</text>
+    <rect x="155" y="52" width="14" height="14" rx="3" fill="url(#endGrad)"/>
+    <text x="175" y="63" font-size="10" fill="#475569">Final State</text>
+    <line x1="155" y1="82" x2="185" y2="82" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+    <text x="192" y="86" font-size="10" fill="#475569">Flow Direction</text>
+  </g>
+
+  <!-- ============ FLOW NODES ============ -->
+
+  <!-- 1. START: Homepage -->
+  <g transform="translate(100, 100)">
+    <rect x="0" y="0" width="160" height="40" rx="20" fill="url(#startGrad)" filter="url(#shadow)"/>
+    <text x="80" y="25" text-anchor="middle" fill="white" font-size="12" font-weight="600">GMS Homepage</text>
+  </g>
+
+  <!-- Arrow: Homepage -> Select Category -->
+  <line x1="180" y1="140" x2="180" y2="175" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 2. Select Category -->
+  <g transform="translate(100, 185)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">Select Category</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">Athlete / Staff / Official</text>
+  </g>
+
+  <!-- Arrow: Select Category -> Aadhaar Auth -->
+  <line x1="180" y1="229" x2="180" y2="264" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 3. Aadhaar Authentication -->
+  <g transform="translate(100, 274)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">Aadhaar Authentication</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">OTP Verification</text>
+  </g>
+
+  <!-- Arrow: Aadhaar -> Decision: New or Existing -->
+  <line x1="180" y1="318" x2="180" y2="353" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 4. Decision: New or Existing -->
+  <g transform="translate(180, 390)">
+    <polygon points="0,-27 90,0 0,27 -90,0" fill="white" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="0" y="-5" text-anchor="middle" fill="#334155" font-size="10" font-weight="600">Duplicate</text>
+    <text x="0" y="8" text-anchor="middle" fill="#334155" font-size="10" font-weight="600">Check?</text>
+  </g>
+
+  <!-- Arrow: Decision YES (duplicate) -> Show Status -->
+  <line x1="90" y1="390" x2="30" y2="390" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowHeadRed)"/>
+  <text x="55" y="383" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="600">Exists</text>
+
+  <!-- Duplicate: Show Existing Status -->
+  <g transform="translate(-80, 370)">
+    <rect x="0" y="0" width="110" height="40" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1" filter="url(#shadow)"/>
+    <text x="55" y="17" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="600">Show Existing</text>
+    <text x="55" y="30" text-anchor="middle" fill="#dc2626" font-size="9">Status Page</text>
+  </g>
+
+  <!-- Arrow: Decision NO (new) -> Fill Form -->
+  <line x1="180" y1="417" x2="180" y2="455" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowHeadGreen)"/>
+  <text x="195" y="440" fill="#10b981" font-size="9" font-weight="600">New</text>
+
+  <!-- 5. Fill Registration Form -->
+  <g transform="translate(100, 465)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">Fill Registration Form</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">Photo, Details, Address, Kit</text>
+  </g>
+
+  <!-- Arrow: Fill Form -> Preview -->
+  <line x1="180" y1="509" x2="180" y2="544" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 6. Preview & Submit -->
+  <g transform="translate(100, 554)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">Preview &amp; Submit</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">Review all details</text>
+  </g>
+
+  <!-- Arrow: Preview -> Submitted Status -->
+  <line x1="260" y1="576" x2="380" y2="576" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 7. Submitted - Pending Verification -->
+  <g transform="translate(390, 554)">
+    <rect x="0" y="0" width="200" height="44" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="100" y="18" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="600">Submitted</text>
+    <text x="100" y="33" text-anchor="middle" fill="#3b82f6" font-size="9">Pending Verification</text>
+  </g>
+
+  <!-- ============ ADMIN FLOW (Right Side) ============ -->
+
+  <!-- Arrow: Submitted -> Admin Review -->
+  <line x1="490" y1="554" x2="490" y2="430" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 8. Admin Login & Dashboard -->
+  <g transform="translate(390, 100)">
+    <rect x="0" y="0" width="200" height="44" rx="6" fill="url(#adminGrad)" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="100" y="18" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">Admin Login &amp; Dashboard</text>
+    <text x="100" y="33" text-anchor="middle" fill="#b45309" font-size="9">View all records &amp; stats</text>
+  </g>
+
+  <!-- Arrow: Admin Dashboard -> Review Record -->
+  <line x1="490" y1="144" x2="490" y2="179" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 9. Review Record -->
+  <g transform="translate(390, 189)">
+    <rect x="0" y="0" width="200" height="44" rx="6" fill="url(#adminGrad)" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="100" y="18" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">Review Record Details</text>
+    <text x="100" y="33" text-anchor="middle" fill="#b45309" font-size="9">Verify submitted information</text>
+  </g>
+
+  <!-- Arrow: Review -> Decision: Approve or Flag -->
+  <line x1="490" y1="233" x2="490" y2="268" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 10. Decision: Verify or Flag -->
+  <g transform="translate(490, 305)">
+    <polygon points="0,-27 90,0 0,27 -90,0" fill="white" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="0" y="-5" text-anchor="middle" fill="#334155" font-size="10" font-weight="600">Admin</text>
+    <text x="0" y="8" text-anchor="middle" fill="#334155" font-size="10" font-weight="600">Decision</text>
+  </g>
+
+  <!-- Arrow: Decision -> Verify (right) -->
+  <line x1="580" y1="305" x2="680" y2="305" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowHeadGreen)"/>
+  <text x="630" y="298" text-anchor="middle" fill="#10b981" font-size="9" font-weight="600">Verify</text>
+
+  <!-- 11. Verified -->
+  <g transform="translate(690, 283)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#065f46" font-size="11" font-weight="600">Verified</text>
+    <text x="80" y="33" text-anchor="middle" fill="#059669" font-size="9">Credentials Generated</text>
+  </g>
+
+  <!-- Arrow: Decision -> Flag (down) -->
+  <line x1="490" y1="332" x2="490" y2="380" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowHeadRed)"/>
+  <text x="505" y="360" fill="#ef4444" font-size="9" font-weight="600">Flag</text>
+
+  <!-- 12. Flagged for Correction -->
+  <g transform="translate(390, 390)">
+    <rect x="0" y="0" width="200" height="44" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="100" y="18" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="600">Flagged for Correction</text>
+    <text x="100" y="33" text-anchor="middle" fill="#ef4444" font-size="9">Admin remarks on fields</text>
+  </g>
+
+  <!-- Arrow: Flagged -> User Corrects (loops back left) -->
+  <line x1="390" y1="412" x2="320" y2="412" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="320" y1="412" x2="320" y2="490" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="320" y1="490" x2="260" y2="490" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrowHeadRed)"/>
+  <text x="335" y="455" fill="#ef4444" font-size="9" font-weight="500">Correction</text>
+  <text x="335" y="466" fill="#ef4444" font-size="9" font-weight="500">Required</text>
+
+  <!-- ============ USER LOGIN FLOW (Bottom Right) ============ -->
+
+  <!-- Arrow: Verified -> Credentials Email -->
+  <line x1="770" y1="327" x2="770" y2="395" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowHeadGreen)"/>
+
+  <!-- 13. Credentials Sent -->
+  <g transform="translate(690, 405)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">Credentials Displayed</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">Email + Password shown</text>
+  </g>
+
+  <!-- Arrow: Credentials -> User Login -->
+  <line x1="770" y1="449" x2="770" y2="484" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 14. User Login -->
+  <g transform="translate(690, 494)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="600">User Login</text>
+    <text x="80" y="33" text-anchor="middle" fill="#64748b" font-size="9">Email + Password</text>
+  </g>
+
+  <!-- Arrow: User Login -> Dashboard -->
+  <line x1="770" y1="538" x2="770" y2="573" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- 15. User Dashboard (END) -->
+  <g transform="translate(690, 583)">
+    <rect x="0" y="0" width="160" height="44" rx="22" fill="url(#endGrad)" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="white" font-size="11" font-weight="600">User Dashboard</text>
+    <text x="80" y="33" text-anchor="middle" fill="#c7d2fe" font-size="9">View registration details</text>
+  </g>
+
+  <!-- ============ ADMIN ALTERNATE PATHS ============ -->
+
+  <!-- Admin Bulk Upload Path -->
+  <g transform="translate(690, 100)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="url(#adminGrad)" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">Bulk Upload (CSV)</text>
+    <text x="80" y="33" text-anchor="middle" fill="#b45309" font-size="9">Admin batch import</text>
+  </g>
+
+  <!-- Arrow: Admin Dashboard -> Bulk Upload -->
+  <line x1="590" y1="122" x2="680" y2="122" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- Admin Manual Entry Path -->
+  <g transform="translate(690, 185)">
+    <rect x="0" y="0" width="160" height="44" rx="6" fill="url(#adminGrad)" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="18" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">Manual Entry</text>
+    <text x="80" y="33" text-anchor="middle" fill="#b45309" font-size="9">Admin creates record</text>
+  </g>
+
+  <!-- Arrow: Admin Dashboard -> Manual Entry -->
+  <line x1="590" y1="135" x2="640" y2="207" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+
+  <!-- Bulk/Manual -> Auto Verified -->
+  <line x1="850" y1="122" x2="920" y2="122" stroke="#64748b" stroke-width="1"/>
+  <line x1="850" y1="207" x2="920" y2="207" stroke="#64748b" stroke-width="1"/>
+  <line x1="920" y1="122" x2="920" y2="207" stroke="#64748b" stroke-width="1"/>
+  <line x1="920" y1="165" x2="960" y2="165" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowHeadGreen)"/>
+
+  <g transform="translate(970, 143)">
+    <rect x="0" y="0" width="140" height="44" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="70" y="18" text-anchor="middle" fill="#065f46" font-size="11" font-weight="600">Auto-Verified</text>
+    <text x="70" y="33" text-anchor="middle" fill="#059669" font-size="9">Bulk / Admin Entry</text>
+  </g>
+
+  <!-- ============ SECTION LABELS ============ -->
+
+  <!-- User Flow Label -->
+  <g transform="translate(30, 82)">
+    <rect x="0" y="0" width="90" height="22" rx="4" fill="#3b82f6" opacity="0.9"/>
+    <text x="45" y="15" text-anchor="middle" fill="white" font-size="10" font-weight="600">USER FLOW</text>
+  </g>
+
+  <!-- Admin Flow Label -->
+  <g transform="translate(390, 82)">
+    <rect x="0" y="0" width="100" height="22" rx="4" fill="#f59e0b" opacity="0.9"/>
+    <text x="50" y="15" text-anchor="middle" fill="#78350f" font-size="10" font-weight="600">ADMIN FLOW</text>
+  </g>
+
+  <!-- Divider Line -->
+  <line x1="360" y1="75" x2="360" y2="640" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- Footer -->
+  <rect x="0" y="860" width="1200" height="40" fill="#1e3a5f" opacity="0.05"/>
+  <text x="40" y="882" fill="#94a3b8" font-size="10">Games Management System (GMS) — CSR Registration Module</text>
+  <text x="1160" y="882" text-anchor="end" fill="#94a3b8" font-size="10">Production Release | 3 Categories | 7 Statuses | Full Audit Trail</text>
+</svg>

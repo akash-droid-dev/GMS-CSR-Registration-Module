@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { SUPPORT_NOTE } from '@/lib/constants';
 
 interface AadhaarAuthProps {
@@ -54,12 +55,12 @@ export default function AadhaarAuth({ route, onSuccess }: AadhaarAuthProps) {
       <header className="bg-[#1e3a5f] text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="font-bold">GMS — CSR Registration</span>
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -177,12 +178,16 @@ export default function AadhaarAuth({ route, onSuccess }: AadhaarAuthProps) {
           </div>
 
           <div className="text-center mt-4">
-            <a href="/" className="text-sm text-slate-500 hover:text-slate-700 inline-flex items-center gap-1">
+            <Link href="/" className="text-sm text-slate-500 hover:text-slate-700 inline-flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Back to Home
-            </a>
+            </Link>
+            <Link href="/user/login" className="text-sm text-blue-600 hover:text-blue-800 inline-flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
+              Already registered? Login here
+            </Link>
           </div>
         </div>
       </main>

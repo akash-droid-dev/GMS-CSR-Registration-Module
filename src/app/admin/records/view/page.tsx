@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AdminLayout from '@/components/AdminLayout';
-import { fetchRecordById, updateRecordStatus, updateRecord, addAuditLog, getAdminSession, fetchAuditLogs } from '@/lib/store';
+import { fetchRecordById, updateRecordStatus, updateRecord, addAuditLog, getAdminSession, fetchAuditLogs, generateUserPassword } from '@/lib/store';
 import { ACCESS_AREAS } from '@/lib/constants';
 import type { RegistrationRecord, FlaggedField, AuditLogEntry } from '@/lib/types';
 
@@ -50,7 +50,8 @@ function RecordDetailContent() {
 
   const handleVerify = async () => {
     try {
-      await updateRecordStatus(record.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: actorName }, { action: 'Verified', actor: actorName, details: 'Record verified by admin' });
+      const password = generateUserPassword(record);
+      await updateRecordStatus(record.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: actorName, loginPassword: password }, { action: 'Verified', actor: actorName, details: 'Record verified by admin' });
       await loadRecord();
     } catch (err) {
       console.error('Verify failed:', err);

@@ -78,3 +78,5 @@ export const ADMIN_CREDENTIALS = {
   name: 'System Administrator',
   role: 'Super Admin',
 };
+
+export const USER_VERIFIED_MESSAGE = 'Your registration has been verified. You can now login using your registered email ID and the password provided below to access your participant dashboard.';

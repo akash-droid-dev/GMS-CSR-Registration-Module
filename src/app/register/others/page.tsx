@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import AadhaarAuth from '@/components/AadhaarAuth';
 import FormField from '@/components/FormField';
 import { GENDERS, STATES } from '@/lib/constants';
@@ -115,10 +116,10 @@ export default function OthersRegistration() {
         <header className="bg-[#1e3a5f] text-white shadow-lg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center h-16">
-              <a href="/" className="flex items-center gap-3">
+              <Link href="/" className="flex items-center gap-3">
                 <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span className="font-bold">GMS — Others Registration</span>
-              </a>
+              </Link>
             </div>
           </div>
         </header>
@@ -163,10 +164,10 @@ export default function OthersRegistration() {
       <header className="bg-[#1e3a5f] text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span className="font-bold">GMS — {selectedCategory} Registration</span>
-            </a>
+            </Link>
             <div className={`px-3 py-1 rounded-full text-xs font-semibold ${selectedCategory === 'Support Staff' ? 'bg-purple-100 text-purple-800' : 'bg-teal-100 text-teal-800'}`}>
               {selectedCategory}
             </div>
@@ -233,7 +234,7 @@ export default function OthersRegistration() {
           </div>
 
           <div className="flex justify-between">
-            <a href="/" className="btn btn-outline">Back to Home</a>
+            <Link href="/" className="btn btn-outline">Back to Home</Link>
             <button className="btn btn-blue btn-lg" onClick={handlePreview}>
               Preview Application
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { ADMIN_CREDENTIALS } from '@/lib/constants';
 import { setAdminSession } from '@/lib/store';
 
@@ -106,7 +107,7 @@ export default function AdminLogin() {
           </button>
 
           <div className="mt-4 text-center">
-            <a href="/" className="text-sm text-slate-500 hover:text-slate-700">Back to Public Portal</a>
+            <Link href="/" className="text-sm text-slate-500 hover:text-slate-700">Back to Public Portal</Link>
           </div>
         </form>
       </div>

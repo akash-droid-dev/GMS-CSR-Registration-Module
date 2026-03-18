@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import FormField from '@/components/FormField';
 import { fetchRecordById, updateRecord, updateRecordStatus, addAuditLog } from '@/lib/store';
 import { BLOOD_GROUPS, CONTACT_PERSON_RELATIONS, KIT_SIZES, STATES, GENDERS, WOMEN_SHOE_SIZES, MEN_SHOE_SIZES } from '@/lib/constants';
@@ -200,7 +201,7 @@ function CorrectionContent() {
           )}
 
           <div className="flex justify-between mt-8">
-            <a href="/" className="btn btn-outline">Back to Home</a>
+            <Link href="/" className="btn btn-outline">Back to Home</Link>
             <button onClick={handleResubmit} disabled={submitting} className="btn btn-success btn-lg">
               {submitting ? 'Resubmitting...' : 'Resubmit Corrected Application'}
             </button>

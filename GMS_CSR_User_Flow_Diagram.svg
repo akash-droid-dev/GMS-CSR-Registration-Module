@@ -1,0 +1,236 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 820" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#475569"/></marker>
+    <marker id="ag" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#16a34a"/></marker>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#dc2626"/></marker>
+    <marker id="ao" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ea580c"/></marker>
+  </defs>
+
+  <!-- BG -->
+  <rect width="1100" height="820" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <rect width="1100" height="52" fill="#1e3a5f"/>
+  <text x="550" y="24" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">GMS — CSR Registration Module v3.0</text>
+  <text x="550" y="42" text-anchor="middle" fill="#93c5fd" font-size="10">Production User Flow Diagram</text>
+
+  <!-- ========== PUBLIC LANE ========== -->
+  <rect x="20" y="68" width="540" height="732" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="290" y="88" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="700" letter-spacing="1">PUBLIC FLOW</text>
+
+  <!-- SCR-01 Landing -->
+  <rect x="210" y="104" width="160" height="40" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="290" y="121" text-anchor="middle" fill="#1e3a5f" font-size="10" font-weight="700">SCR-01</text>
+  <text x="290" y="135" text-anchor="middle" fill="#64748b" font-size="9">Landing Page</text>
+
+  <!-- Decision -->
+  <polygon points="290,170 330,192 290,214 250,192" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="290" y="196" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Category?</text>
+  <line x1="290" y1="144" x2="290" y2="170" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-02 Auth (Athlete) -->
+  <rect x="80" y="232" width="140" height="36" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="150" y="248" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-02 Auth</text>
+  <text x="150" y="260" text-anchor="middle" fill="#64748b" font-size="8">Aadhaar + OTP</text>
+  <line x1="265" y1="200" x2="185" y2="230" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="210" y="212" fill="#475569" font-size="7" font-weight="600">Athlete</text>
+
+  <!-- SCR-02 Auth (Others) -->
+  <rect x="360" y="232" width="140" height="36" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="248" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-02 Auth</text>
+  <text x="430" y="260" text-anchor="middle" fill="#64748b" font-size="8">Aadhaar + OTP</text>
+  <line x1="315" y1="200" x2="395" y2="230" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="365" y="212" fill="#475569" font-size="7" font-weight="600">Others</text>
+
+  <!-- SCR-03/04 Athlete Form -->
+  <rect x="70" y="290" width="160" height="44" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="150" y="308" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-03 / 04</text>
+  <text x="150" y="320" text-anchor="middle" fill="#64748b" font-size="8">Athlete Form (2 Steps)</text>
+  <text x="150" y="330" text-anchor="middle" fill="#94a3b8" font-size="7">General + Contact + Kit</text>
+  <line x1="150" y1="268" x2="150" y2="288" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-05/06/07 Others Form -->
+  <rect x="350" y="290" width="160" height="44" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="430" y="308" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-05 / 06 / 07</text>
+  <text x="430" y="320" text-anchor="middle" fill="#64748b" font-size="8">Others Form (1 Step)</text>
+  <text x="430" y="330" text-anchor="middle" fill="#94a3b8" font-size="7">Category Select + Details</text>
+  <line x1="430" y1="268" x2="430" y2="288" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-08 Preview -->
+  <rect x="195" y="360" width="190" height="40" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="290" y="377" text-anchor="middle" fill="#1e3a5f" font-size="10" font-weight="700">SCR-08</text>
+  <text x="290" y="392" text-anchor="middle" fill="#64748b" font-size="9">Preview &amp; Final Submit</text>
+  <line x1="150" y1="334" x2="250" y2="358" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="430" y1="334" x2="340" y2="358" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Status: Submitted -->
+  <rect x="205" y="420" width="170" height="28" rx="14" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2"/>
+  <text x="290" y="439" text-anchor="middle" fill="#854d0e" font-size="9" font-weight="700">Submitted — Pending</text>
+  <line x1="290" y1="400" x2="290" y2="418" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-09 Confirmation -->
+  <rect x="210" y="468" width="160" height="36" rx="6" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="290" y="484" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-09</text>
+  <text x="290" y="496" text-anchor="middle" fill="#64748b" font-size="8">Confirmation</text>
+  <line x1="290" y1="448" x2="290" y2="466" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- CORRECTION LOOP -->
+  <!-- SCR-10 -->
+  <rect x="100" y="550" width="200" height="44" rx="6" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="200" y="568" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-10 Correction</text>
+  <text x="200" y="580" text-anchor="middle" fill="#64748b" font-size="8">Flagged fields only editable</text>
+
+  <!-- Flagged status coming from admin -->
+  <rect x="100" y="524" width="160" height="22" rx="11" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="180" y="539" text-anchor="middle" fill="#991b1b" font-size="8" font-weight="600">Flagged for Correction</text>
+  <line x1="180" y1="546" x2="200" y2="548" stroke="#dc2626" stroke-width="1.2" marker-end="url(#ar)"/>
+
+  <!-- Correction Submitted -->
+  <rect x="320" y="560" width="200" height="22" rx="11" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+  <text x="420" y="575" text-anchor="middle" fill="#854d0e" font-size="8" font-weight="600">Correction Submitted — Pending</text>
+  <line x1="300" y1="572" x2="318" y2="572" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ao)"/>
+
+  <!-- Arrow back to admin queue -->
+  <path d="M 520 571 L 560 571" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ao)"/>
+  <text x="530" y="564" fill="#ea580c" font-size="7">Re-queued</text>
+
+  <!-- ========== ADMIN LANE ========== -->
+  <rect x="580" y="68" width="500" height="732" rx="8" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="830" y="88" text-anchor="middle" fill="#7e22ce" font-size="11" font-weight="700" letter-spacing="1">ADMIN FLOW</text>
+
+  <!-- Admin Login -->
+  <rect x="740" y="104" width="160" height="40" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="820" y="121" text-anchor="middle" fill="#1e3a5f" font-size="10" font-weight="700">Admin Login</text>
+  <text x="820" y="135" text-anchor="middle" fill="#64748b" font-size="9">ID + Password</text>
+
+  <!-- Dashboard -->
+  <rect x="740" y="168" width="160" height="40" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="820" y="185" text-anchor="middle" fill="#1e3a5f" font-size="10" font-weight="700">Dashboard</text>
+  <text x="820" y="199" text-anchor="middle" fill="#64748b" font-size="9">Stats Overview</text>
+  <line x1="820" y1="144" x2="820" y2="166" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-11 Records Queue -->
+  <rect x="610" y="240" width="170" height="44" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="695" y="258" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-11 Records</text>
+  <text x="695" y="270" text-anchor="middle" fill="#64748b" font-size="8">Queue + Filters + Bulk Verify</text>
+  <line x1="780" y1="208" x2="730" y2="238" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- SCR-12 Record Detail -->
+  <rect x="610" y="310" width="170" height="44" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="695" y="328" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-12 Detail</text>
+  <text x="695" y="340" text-anchor="middle" fill="#64748b" font-size="8">View + Edit + Audit Log</text>
+  <line x1="695" y1="284" x2="695" y2="308" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Decision: Admin Action -->
+  <polygon points="695,380 735,400 695,420 655,400" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="695" y="404" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">Action?</text>
+  <line x1="695" y1="354" x2="695" y2="378" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Verify -->
+  <rect x="600" y="440" width="110" height="26" rx="13" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="655" y="457" text-anchor="middle" fill="#166534" font-size="10" font-weight="700">Verified</text>
+  <line x1="675" y1="415" x2="660" y2="438" stroke="#16a34a" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="650" y="430" fill="#16a34a" font-size="7" font-weight="600">Verify</text>
+
+  <!-- Flag -->
+  <rect x="730" y="440" width="130" height="26" rx="13" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="795" y="457" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="700">Flag</text>
+  <line x1="715" y1="415" x2="770" y2="438" stroke="#dc2626" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="755" y="430" fill="#dc2626" font-size="7" font-weight="600">Flag</text>
+
+  <!-- Flag arrow to public correction -->
+  <path d="M 795 466 L 795 535 L 262 535" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#ar)"/>
+  <text x="530" y="530" fill="#dc2626" font-size="7">Sent to Applicant</text>
+
+  <!-- SCR-13 Bulk Upload -->
+  <rect x="860" y="240" width="190" height="44" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="955" y="258" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-13 Bulk Upload</text>
+  <text x="955" y="270" text-anchor="middle" fill="#64748b" font-size="8">17-col Excel (Athletes)</text>
+  <line x1="860" y1="208" x2="920" y2="238" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="880" y="300" width="150" height="22" rx="11" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="955" y="315" text-anchor="middle" fill="#166534" font-size="8" font-weight="600">Verified — Bulk Upload</text>
+  <line x1="955" y1="284" x2="955" y2="298" stroke="#16a34a" stroke-width="1.2" marker-end="url(#ag)"/>
+
+  <!-- SCR-14 Manual Entry -->
+  <rect x="860" y="350" width="190" height="44" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="955" y="368" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-14 Manual Entry</text>
+  <text x="955" y="380" text-anchor="middle" fill="#64748b" font-size="8">All Categories</text>
+
+  <rect x="880" y="410" width="150" height="22" rx="11" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="955" y="425" text-anchor="middle" fill="#166534" font-size="8" font-weight="600">Verified — Admin Entry</text>
+  <line x1="955" y1="394" x2="955" y2="408" stroke="#16a34a" stroke-width="1.2" marker-end="url(#ag)"/>
+
+  <!-- SCR-15 Audit -->
+  <rect x="860" y="455" width="190" height="36" rx="6" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="955" y="471" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="700">SCR-15 Audit Log</text>
+  <text x="955" y="483" text-anchor="middle" fill="#64748b" font-size="8">Full Action History</text>
+
+  <!-- ========== STATUS LIFECYCLE ========== -->
+  <rect x="20" y="620" width="1060" height="80" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="640" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="700">STATUS LIFECYCLE</text>
+
+  <!-- Draft -->
+  <rect x="40" y="656" width="90" height="28" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.2"/>
+  <text x="85" y="674" text-anchor="middle" fill="#475569" font-size="8" font-weight="600">Draft</text>
+  <line x1="130" y1="670" x2="155" y2="670" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Submitted -->
+  <rect x="165" y="656" width="155" height="28" rx="14" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2"/>
+  <text x="242" y="674" text-anchor="middle" fill="#854d0e" font-size="8" font-weight="600">Submitted — Pending</text>
+
+  <!-- to Verified -->
+  <line x1="320" y1="662" x2="390" y2="662" stroke="#16a34a" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="355" y="657" fill="#16a34a" font-size="7" font-weight="600">Verify</text>
+
+  <!-- Verified -->
+  <rect x="400" y="652" width="90" height="28" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="445" y="670" text-anchor="middle" fill="#166534" font-size="9" font-weight="700">Verified</text>
+
+  <!-- to Flagged -->
+  <line x1="320" y1="678" x2="520" y2="678" stroke="#dc2626" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="420" y="690" fill="#dc2626" font-size="7" font-weight="600">Flag</text>
+
+  <!-- Flagged -->
+  <rect x="530" y="664" width="150" height="28" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="605" y="682" text-anchor="middle" fill="#991b1b" font-size="8" font-weight="600">Flagged for Correction</text>
+
+  <!-- to Correction Submitted -->
+  <line x1="680" y1="678" x2="710" y2="678" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ao)"/>
+
+  <!-- Correction Submitted -->
+  <rect x="720" y="656" width="175" height="28" rx="14" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2"/>
+  <text x="808" y="674" text-anchor="middle" fill="#854d0e" font-size="8" font-weight="600">Correction Submitted</text>
+
+  <!-- back to Verified -->
+  <path d="M 895 665 L 920 665 L 920 650 L 492 650" fill="none" stroke="#16a34a" stroke-width="1.2" marker-end="url(#ag)"/>
+  <text x="700" y="646" fill="#16a34a" font-size="7" font-weight="600">Verify</text>
+
+  <!-- re-flag -->
+  <path d="M 895 685 L 920 685 L 920 700 L 605 700 L 605 694" fill="none" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ar)"/>
+  <text x="760" y="712" fill="#dc2626" font-size="7">Re-flag</text>
+
+  <!-- ========== LEGEND ========== -->
+  <rect x="20" y="720" width="1060" height="76" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Row 1 -->
+  <rect x="40" y="734" width="14" height="14" rx="3" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="60" y="746" fill="#475569" font-size="9">Screen</text>
+  <polygon points="140,741 150,735 160,741 150,747" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="168" y="746" fill="#475569" font-size="9">Decision</text>
+  <rect x="240" y="735" width="14" height="14" rx="7" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+  <text x="260" y="746" fill="#475569" font-size="9">Pending</text>
+  <rect x="320" y="735" width="14" height="14" rx="7" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="746" fill="#475569" font-size="9">Verified</text>
+  <rect x="400" y="735" width="14" height="14" rx="7" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="420" y="746" fill="#475569" font-size="9">Flagged</text>
+
+  <!-- Row 2: Categories + Sources -->
+  <text x="40" y="776" fill="#1e3a5f" font-size="9" font-weight="700">Categories:</text>
+  <text x="110" y="776" fill="#475569" font-size="9">Athlete (2-step) | Support Staff | Technical Official</text>
+  <text x="520" y="776" fill="#1e3a5f" font-size="9" font-weight="700">Sources:</text>
+  <text x="575" y="776" fill="#475569" font-size="9">Self-Registration | Bulk Upload | Admin Manual Entry</text>
+
+  <!-- Version -->
+  <text x="1060" y="776" text-anchor="end" fill="#94a3b8" font-size="8">BRD/FRD v3.0</text>
+</svg>

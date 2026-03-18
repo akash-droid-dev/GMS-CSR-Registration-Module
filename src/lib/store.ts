@@ -6,6 +6,7 @@ const BATCHES_KEY = 'gms_batches';
 const ADMIN_SESSION_KEY = 'gms_admin_session';
 const CURRENT_REG_KEY = 'gms_current_registration';
 const AUTH_SESSION_KEY = 'gms_auth_session';
+const USER_SESSION_KEY = 'gms_user_session';
 
 function getFromStorage<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback;
@@ -224,4 +225,20 @@ export function getAuthSession(): { aadhaarRef: string; route: string; category?
 
 export function setAuthSession(data: { aadhaarRef: string; route: string; category?: string } | null): void {
   setToStorage(AUTH_SESSION_KEY, data);
+}
+
+// User Session (for registered user login)
+export function getUserSession(): { isAuthenticated: boolean; recordId: string; email: string; name: string; category: string; loginTime: string } | null {
+  return getFromStorage<{ isAuthenticated: boolean; recordId: string; email: string; name: string; category: string; loginTime: string } | null>(USER_SESSION_KEY, null);
+}
+
+export function setUserSession(data: { isAuthenticated: boolean; recordId: string; email: string; name: string; category: string; loginTime: string } | null): void {
+  setToStorage(USER_SESSION_KEY, data);
+}
+
+// Generate login password for verified user
+export function generateUserPassword(record: { firstName: string; lastName: string; aadhaarRef: string }): string {
+  const namePart = (record.firstName.slice(0, 2) + record.lastName.slice(0, 2)).toUpperCase();
+  const aadhaarPart = record.aadhaarRef.slice(-4);
+  return 'GMS' + namePart + aadhaarPart + '!';
 }

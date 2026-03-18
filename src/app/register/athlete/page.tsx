@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import AadhaarAuth from '@/components/AadhaarAuth';
 import FormField from '@/components/FormField';
 import { BLOOD_GROUPS, CONTACT_PERSON_RELATIONS, KIT_SIZES, STATES, GENDERS, WOMEN_SHOE_SIZES, MEN_SHOE_SIZES } from '@/lib/constants';
@@ -132,12 +133,12 @@ export default function AthleteRegistration() {
       <header className="bg-[#1e3a5f] text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="font-bold">GMS — Athlete Registration</span>
-            </a>
+            </Link>
             <div className="flex items-center gap-2 text-sm text-blue-200">
               <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
                 Step {step} of 2
@@ -245,7 +246,7 @@ export default function AthleteRegistration() {
             </div>
 
             <div className="flex justify-between">
-              <a href="/" className="btn btn-outline">Back to Home</a>
+              <Link href="/" className="btn btn-outline">Back to Home</Link>
               <button className="btn btn-primary btn-lg" onClick={handleNextStep}>
                 Next: Kit Details
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

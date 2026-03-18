@@ -45,6 +45,7 @@ export interface AthleteRecord {
   updatedAt: string;
   verifiedAt?: string;
   verifiedBy?: string;
+  loginPassword?: string;
   // Correction
   flaggedFields?: FlaggedField[];
   flagRemarks?: string;
@@ -77,6 +78,7 @@ export interface SupportStaffRecord {
   updatedAt: string;
   verifiedAt?: string;
   verifiedBy?: string;
+  loginPassword?: string;
   // Correction
   flaggedFields?: FlaggedField[];
   flagRemarks?: string;
@@ -109,6 +111,7 @@ export interface TechnicalOfficialRecord {
   updatedAt: string;
   verifiedAt?: string;
   verifiedBy?: string;
+  loginPassword?: string;
   // Correction
   flaggedFields?: FlaggedField[];
   flagRemarks?: string;
@@ -156,5 +159,14 @@ export interface AdminSession {
   loginId: string;
   name: string;
   role: string;
+  loginTime: string;
+}
+
+export interface UserSession {
+  isAuthenticated: boolean;
+  recordId: string;
+  email: string;
+  name: string;
+  category: string;
   loginTime: string;
 }
