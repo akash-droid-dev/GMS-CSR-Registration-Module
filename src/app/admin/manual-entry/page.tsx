@@ -40,7 +40,7 @@ export default function ManualEntryPage() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let errs: Record<string, string> = {};
     if (category === 'Athlete') {
       errs = { ...validateAthleteStep1(formData, photoFile, !!photoPreview), ...validateAthleteStep2(formData) };
@@ -82,14 +82,20 @@ export default function ManualEntryPage() {
       record = { ...base, category: category as 'Support Staff' | 'Technical Official', designation: formData.designation?.trim(), mobileNumber: formData.mobileNumber?.trim() } as RegistrationRecord;
     }
 
-    saveRecord(record);
-    addAuditLog({ recordId: id, action: 'Admin Manual Registration', actor: session?.name || 'Admin', details: `${category} manually registered by admin` });
+    try {
+      await saveRecord(record);
+      await addAuditLog({ recordId: id, action: 'Admin Manual Registration', actor: session?.name || 'Admin', details: `${category} manually registered by admin` });
 
-    setSubmitting(false);
-    setSuccess(true);
-    setTimeout(() => {
-      router.push('/admin/records/' + id);
-    }, 2000);
+      setSubmitting(false);
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/admin/records/view?id=' + id);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to save record:', err);
+      setSubmitting(false);
+      setErrors({ _form: 'Failed to save record. Please try again.' });
+    }
   };
 
   const isAthlete = category === 'Athlete';
@@ -213,6 +219,12 @@ export default function ManualEntryPage() {
                   <FormField label="Kit Size" name="kitSize" type="select" required options={[...KIT_SIZES]} value={formData.kitSize} onChange={(v) => updateField('kitSize', v)} error={errors.kitSize} />
                   <FormField label="Shoe Size" name="shoeSize" type="select" required options={shoeSizes} value={formData.shoeSize} onChange={(v) => updateField('shoeSize', v)} error={errors.shoeSize} disabled={!formData.gender} note={formData.gender ? `${formData.gender === 'Female' ? 'Women' : 'Men'} sizes` : 'Select gender first'} />
                 </div>
+              </div>
+            )}
+
+            {errors._form && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                {errors._form}
               </div>
             )}
 

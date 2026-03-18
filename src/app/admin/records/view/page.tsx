@@ -1,17 +1,18 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import AdminLayout from '@/components/AdminLayout';
-import { getRecordById, updateRecordStatus, updateRecord, addAuditLog, getAdminSession, getAuditLogs } from '@/lib/store';
+import { fetchRecordById, updateRecordStatus, updateRecord, addAuditLog, getAdminSession, fetchAuditLogs } from '@/lib/store';
 import { ACCESS_AREAS } from '@/lib/constants';
 import type { RegistrationRecord, FlaggedField, AuditLogEntry } from '@/lib/types';
 
-export default function RecordDetailPage() {
+function RecordDetailContent() {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id') || '';
   const [record, setRecord] = useState<RegistrationRecord | null>(null);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [flagFields, setFlagFields] = useState<FlaggedField[]>([]);
   const [currentFlag, setCurrentFlag] = useState({ fieldName: '', section: '', remark: '' });
@@ -20,17 +21,26 @@ export default function RecordDetailPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editField, setEditField] = useState({ name: '', value: '', label: '' });
 
-  const loadRecord = () => {
-    const r = getRecordById(id);
-    if (!r) { router.push('/admin/records'); return; }
-    setRecord(r);
-    setAccessArea(r.accessArea || '');
-    setAuditLogs(getAuditLogs(id));
-  };
+  const loadRecord = useCallback(async () => {
+    if (!id) { router.push('/admin/records'); return; }
+    try {
+      const r = await fetchRecordById(id);
+      if (!r) { router.push('/admin/records'); return; }
+      setRecord(r);
+      setAccessArea(r.accessArea || '');
+      const logs = await fetchAuditLogs(id);
+      setAuditLogs(logs);
+    } catch (err) {
+      console.error('Failed to load record:', err);
+      router.push('/admin/records');
+    } finally {
+      setLoading(false);
+    }
+  }, [id, router]);
 
-  useEffect(() => { loadRecord(); }, [id, router]);
+  useEffect(() => { loadRecord(); }, [loadRecord]);
 
-  if (!record) return <AdminLayout><div className="flex items-center justify-center h-64"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div></AdminLayout>;
+  if (loading || !record) return <AdminLayout><div className="flex items-center justify-center h-64"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div></AdminLayout>;
 
   const session = getAdminSession();
   const actorName = session?.name || 'Admin';
@@ -38,10 +48,13 @@ export default function RecordDetailPage() {
   const canVerify = record.status === 'Submitted – Pending Verification' || record.status === 'Correction Submitted – Pending Verification';
   const canFlag = record.status === 'Submitted – Pending Verification' || record.status === 'Correction Submitted – Pending Verification';
 
-  const handleVerify = () => {
-    updateRecordStatus(record.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: actorName });
-    addAuditLog({ recordId: record.id, action: 'Verified', actor: actorName, details: 'Record verified by admin' });
-    loadRecord();
+  const handleVerify = async () => {
+    try {
+      await updateRecordStatus(record.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: actorName }, { action: 'Verified', actor: actorName, details: 'Record verified by admin' });
+      await loadRecord();
+    } catch (err) {
+      console.error('Verify failed:', err);
+    }
   };
 
   const handleAddFlag = () => {
@@ -50,30 +63,39 @@ export default function RecordDetailPage() {
     setCurrentFlag({ fieldName: '', section: '', remark: '' });
   };
 
-  const handleSubmitFlags = () => {
+  const handleSubmitFlags = async () => {
     if (flagFields.length === 0) return;
-    updateRecord(record.id, { flaggedFields: flagFields, flagRemarks: flagFields.map(f => `${f.fieldName}: ${f.remark}`).join('; ') });
-    updateRecordStatus(record.id, 'Flagged for Correction');
-    addAuditLog({ recordId: record.id, action: 'Flagged for Correction', actor: actorName, details: `Fields flagged: ${flagFields.map(f => f.fieldName).join(', ')}` });
-    setShowFlagModal(false);
-    setFlagFields([]);
-    loadRecord();
+    try {
+      await updateRecord(record.id, { flaggedFields: flagFields, flagRemarks: flagFields.map(f => `${f.fieldName}: ${f.remark}`).join('; ') }, { action: 'Flagged for Correction', actor: actorName, details: `Fields flagged: ${flagFields.map(f => f.fieldName).join(', ')}` });
+      await updateRecordStatus(record.id, 'Flagged for Correction');
+      setShowFlagModal(false);
+      setFlagFields([]);
+      await loadRecord();
+    } catch (err) {
+      console.error('Flag submission failed:', err);
+    }
   };
 
-  const handleUpdateAccess = () => {
+  const handleUpdateAccess = async () => {
     const oldArea = record.accessArea || 'None';
-    updateRecord(record.id, { accessArea });
-    addAuditLog({ recordId: record.id, action: 'Access Area Updated', actor: actorName, details: `Access area changed`, beforeValue: oldArea, afterValue: accessArea });
-    setShowAccessModal(false);
-    loadRecord();
+    try {
+      await updateRecord(record.id, { accessArea }, { action: 'Access Area Updated', actor: actorName, details: 'Access area changed', beforeValue: oldArea, afterValue: accessArea });
+      setShowAccessModal(false);
+      await loadRecord();
+    } catch (err) {
+      console.error('Access update failed:', err);
+    }
   };
 
-  const handleEditSave = () => {
-    const oldValue = (record as unknown as unknown as Record<string, unknown>)[editField.name] as string || '';
-    updateRecord(record.id, { [editField.name]: editField.value } as Partial<RegistrationRecord>);
-    addAuditLog({ recordId: record.id, action: 'Field Edited', actor: actorName, details: `${editField.label} updated`, beforeValue: oldValue, afterValue: editField.value });
-    setShowEditModal(false);
-    loadRecord();
+  const handleEditSave = async () => {
+    const oldValue = (record as unknown as Record<string, unknown>)[editField.name] as string || '';
+    try {
+      await updateRecord(record.id, { [editField.name]: editField.value } as Partial<RegistrationRecord>, { action: 'Field Edited', actor: actorName, details: `${editField.label} updated`, beforeValue: oldValue, afterValue: editField.value });
+      setShowEditModal(false);
+      await loadRecord();
+    } catch (err) {
+      console.error('Edit failed:', err);
+    }
   };
 
   const openEdit = (name: string, label: string, currentValue: string) => {
@@ -302,5 +324,13 @@ export default function RecordDetailPage() {
         )}
       </div>
     </AdminLayout>
+  );
+}
+
+export default function RecordDetailPage() {
+  return (
+    <Suspense fallback={<AdminLayout><div className="flex items-center justify-center h-64"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div></AdminLayout>}>
+      <RecordDetailContent />
+    </Suspense>
   );
 }

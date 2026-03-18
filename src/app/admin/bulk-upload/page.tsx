@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import AdminLayout from '@/components/AdminLayout';
 import { BULK_UPLOAD_COLUMNS, BLOOD_GROUPS, CONTACT_PERSON_RELATIONS, KIT_SIZES, STATES, GENDERS, WOMEN_SHOE_SIZES, MEN_SHOE_SIZES, REGISTRATION_STATUSES, REGISTRATION_SOURCES } from '@/lib/constants';
-import { saveMultipleRecords, saveBatch, addAuditLog, getAdminSession, getAllRecords } from '@/lib/store';
+import { bulkUpload, fetchAllRecords, getAdminSession } from '@/lib/store';
 import type { AthleteRecord, BulkUploadBatch, BulkUploadError } from '@/lib/types';
 import * as XLSX from 'xlsx';
 
@@ -77,7 +77,16 @@ export default function BulkUploadPage() {
       }
 
       const session = getAdminSession();
-      const existingRecords = getAllRecords();
+
+      // Fetch existing records for duplicate checking
+      let existingRecords: { emailId: string; category: string }[] = [];
+      try {
+        const { records: existing } = await fetchAllRecords();
+        existingRecords = existing.map(r => ({ emailId: r.emailId, category: r.category }));
+      } catch {
+        // If fetch fails, proceed without duplicate check
+      }
+
       const errors: BulkUploadError[] = [];
       const validRecords: AthleteRecord[] = [];
 
@@ -160,10 +169,7 @@ export default function BulkUploadPage() {
         }
       }
 
-      // Save valid records
-      if (validRecords.length > 0) saveMultipleRecords(validRecords);
-
-      // Save batch info
+      // Save valid records and batch info via API
       const batch: BulkUploadBatch = {
         id: uuidv4(),
         fileName: file.name,
@@ -175,12 +181,10 @@ export default function BulkUploadPage() {
         uploadedBy: session?.name || 'Admin',
         uploadedAt: new Date().toISOString(),
       };
-      saveBatch(batch);
 
-      // Audit logs for each imported record
-      validRecords.forEach(r => {
-        addAuditLog({ recordId: r.id, action: 'Bulk Upload Import', actor: session?.name || 'Admin', details: `Athlete imported from bulk upload: ${file.name}` });
-      });
+      if (validRecords.length > 0) {
+        await bulkUpload(validRecords, batch);
+      }
 
       setResult(batch);
     } catch (err) {

@@ -10,6 +10,7 @@ export default function PreviewPage() {
   const router = useRouter();
   const [data, setData] = useState<Record<string, string> | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const reg = getCurrentRegistration();
@@ -64,8 +65,9 @@ export default function PreviewPage() {
     ]},
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitting(true);
+    setError('');
     const id = uuidv4();
     const now = new Date().toISOString();
     const base = {
@@ -110,13 +112,19 @@ export default function PreviewPage() {
       } as RegistrationRecord;
     }
 
-    saveRecord(record);
-    addAuditLog({ recordId: id, action: 'Submitted', actor: 'Applicant (Self)', details: `${data.category} self-registration submitted` });
-    setCurrentRegistration(null);
-    setAuthSession(null);
-    setTimeout(() => {
-      router.push('/register/confirmation?id=' + id);
-    }, 1000);
+    try {
+      await saveRecord(record);
+      await addAuditLog({ recordId: id, action: 'Submitted', actor: 'Applicant (Self)', details: `${data.category} self-registration submitted` });
+      setCurrentRegistration(null);
+      setAuthSession(null);
+      setTimeout(() => {
+        router.push('/register/confirmation?id=' + id);
+      }, 1000);
+    } catch (err) {
+      console.error('Failed to submit registration:', err);
+      setError('Failed to submit your registration. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   const handleEdit = (sectionId: string) => {
@@ -197,6 +205,13 @@ export default function PreviewPage() {
               </div>
             </div>
           ))}
+
+          {/* Error */}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 mb-4">
+              {error}
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex justify-between items-center mt-8">

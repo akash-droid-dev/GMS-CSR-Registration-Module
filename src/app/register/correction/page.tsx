@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FormField from '@/components/FormField';
-import { getRecordById, updateRecord, updateRecordStatus, addAuditLog } from '@/lib/store';
+import { fetchRecordById, updateRecord, updateRecordStatus, addAuditLog } from '@/lib/store';
 import { BLOOD_GROUPS, CONTACT_PERSON_RELATIONS, KIT_SIZES, STATES, GENDERS, WOMEN_SHOE_SIZES, MEN_SHOE_SIZES } from '@/lib/constants';
 import type { RegistrationRecord, FlaggedField } from '@/lib/types';
 
@@ -11,6 +11,7 @@ function CorrectionContent() {
   const params = useSearchParams();
   const recordId = params.get('id');
   const [record, setRecord] = useState<RegistrationRecord | null>(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [photoPreview, setPhotoPreview] = useState('');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -20,16 +21,26 @@ function CorrectionContent() {
 
   useEffect(() => {
     if (!recordId) { router.push('/'); return; }
-    const r = getRecordById(recordId);
-    if (!r || r.status !== 'Flagged for Correction') { router.push('/'); return; }
-    setRecord(r);
-    setPhotoPreview(r.photo);
-    const d: Record<string, string> = {};
-    Object.entries(r).forEach(([k, v]) => { if (typeof v === 'string') d[k] = v; });
-    setFormData(d);
+    const load = async () => {
+      try {
+        const r = await fetchRecordById(recordId);
+        if (!r || r.status !== 'Flagged for Correction') { router.push('/'); return; }
+        setRecord(r);
+        setPhotoPreview(r.photo);
+        const d: Record<string, string> = {};
+        Object.entries(r).forEach(([k, v]) => { if (typeof v === 'string') d[k] = v; });
+        setFormData(d);
+      } catch (err) {
+        console.error('Failed to load record:', err);
+        router.push('/');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, [recordId, router]);
 
-  if (!record) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div>;
+  if (loading || !record) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div>;
 
   const flaggedFields = record.flaggedFields || [];
   const flaggedNames = new Set(flaggedFields.map(f => f.fieldName));
@@ -56,7 +67,7 @@ function CorrectionContent() {
     }
   };
 
-  const handleResubmit = () => {
+  const handleResubmit = async () => {
     setSubmitting(true);
     const updates: Partial<RegistrationRecord> = {};
     flaggedFields.forEach(ff => {
@@ -69,13 +80,17 @@ function CorrectionContent() {
     (updates as Record<string, unknown>).flaggedFields = [];
     (updates as Record<string, unknown>).flagRemarks = '';
 
-    updateRecord(record.id, updates);
-    updateRecordStatus(record.id, 'Correction Submitted – Pending Verification');
-    addAuditLog({ recordId: record.id, action: 'Correction Resubmitted', actor: 'Applicant (Self)', details: 'Corrected flagged fields and resubmitted' });
+    try {
+      await updateRecord(record.id, updates, { action: 'Correction Resubmitted', actor: 'Applicant (Self)', details: 'Corrected flagged fields and resubmitted' });
+      await updateRecordStatus(record.id, 'Correction Submitted – Pending Verification');
 
-    setTimeout(() => {
-      router.push('/register/confirmation?status=' + encodeURIComponent('Correction Submitted – Pending Verification') + '&id=' + record.id);
-    }, 1000);
+      setTimeout(() => {
+        router.push('/register/confirmation?status=' + encodeURIComponent('Correction Submitted – Pending Verification') + '&id=' + record.id);
+      }, 1000);
+    } catch (err) {
+      console.error('Failed to resubmit correction:', err);
+      setSubmitting(false);
+    }
   };
 
   const isAthlete = record.category === 'Athlete';

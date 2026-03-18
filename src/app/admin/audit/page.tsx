@@ -1,18 +1,28 @@
 'use client';
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/AdminLayout';
-import { getAuditLogs } from '@/lib/store';
+import { fetchAuditLogs } from '@/lib/store';
 import type { AuditLogEntry } from '@/lib/types';
 
 export default function AuditPage() {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [actionFilter, setActionFilter] = useState('');
 
   useEffect(() => {
-    const all = getAuditLogs();
-    all.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-    setLogs(all);
+    const load = async () => {
+      try {
+        const all = await fetchAuditLogs();
+        all.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        setLogs(all);
+      } catch (err) {
+        console.error('Failed to load audit logs:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, []);
 
   const actions = [...new Set(logs.map(l => l.action))];
@@ -25,6 +35,16 @@ export default function AuditPage() {
     }
     return true;
   });
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>

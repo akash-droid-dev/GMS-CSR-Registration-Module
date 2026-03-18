@@ -2,26 +2,35 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
-import { getAllRecords } from '@/lib/store';
-import type { RegistrationRecord } from '@/lib/types';
+import { fetchStats } from '@/lib/store';
 
 export default function AdminDashboard() {
-  const [records, setRecords] = useState<RegistrationRecord[]>([]);
+  const [stats, setStats] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => { setRecords(getAllRecords()); }, []);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchStats();
+        setStats(data);
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  const stats = {
-    total: records.length,
-    pending: records.filter(r => r.status === 'Submitted – Pending Verification' || r.status === 'Correction Submitted – Pending Verification').length,
-    flagged: records.filter(r => r.status === 'Flagged for Correction').length,
-    verified: records.filter(r => r.status.startsWith('Verified')).length,
-    athletes: records.filter(r => r.category === 'Athlete').length,
-    supportStaff: records.filter(r => r.category === 'Support Staff').length,
-    technicalOfficials: records.filter(r => r.category === 'Technical Official').length,
-    selfReg: records.filter(r => r.source === 'Self-Registration').length,
-    bulkUpload: records.filter(r => r.source === 'Bulk Upload').length,
-    adminManual: records.filter(r => r.source === 'Admin Manual Entry').length,
-  };
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -37,7 +46,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-500">Total Records</p>
-                <p className="text-3xl font-bold text-[#1e3a5f]">{stats.total}</p>
+                <p className="text-3xl font-bold text-[#1e3a5f]">{stats.total || 0}</p>
               </div>
               <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -48,7 +57,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-500">Pending Verification</p>
-                <p className="text-3xl font-bold text-amber-600">{stats.pending}</p>
+                <p className="text-3xl font-bold text-amber-600">{stats.pending || 0}</p>
               </div>
               <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -59,7 +68,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-500">Flagged for Correction</p>
-                <p className="text-3xl font-bold text-red-600">{stats.flagged}</p>
+                <p className="text-3xl font-bold text-red-600">{stats.flagged || 0}</p>
               </div>
               <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
@@ -70,7 +79,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-500">Verified</p>
-                <p className="text-3xl font-bold text-green-600">{stats.verified}</p>
+                <p className="text-3xl font-bold text-green-600">{stats.verified || 0}</p>
               </div>
               <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -85,9 +94,9 @@ export default function AdminDashboard() {
             <h3 className="font-bold text-[#1e3a5f] mb-4">By Category</h3>
             <div className="space-y-3">
               {[
-                { label: 'Athletes', count: stats.athletes, color: 'bg-blue-500' },
-                { label: 'Support Staff', count: stats.supportStaff, color: 'bg-purple-500' },
-                { label: 'Technical Officials', count: stats.technicalOfficials, color: 'bg-teal-500' },
+                { label: 'Athletes', count: stats.athletes || 0, color: 'bg-blue-500' },
+                { label: 'Support Staff', count: stats.supportStaff || 0, color: 'bg-purple-500' },
+                { label: 'Technical Officials', count: stats.technicalOfficials || 0, color: 'bg-teal-500' },
               ].map(item => (
                 <div key={item.label} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -103,9 +112,9 @@ export default function AdminDashboard() {
             <h3 className="font-bold text-[#1e3a5f] mb-4">By Source</h3>
             <div className="space-y-3">
               {[
-                { label: 'Self-Registration', count: stats.selfReg, color: 'bg-blue-500' },
-                { label: 'Bulk Upload', count: stats.bulkUpload, color: 'bg-amber-500' },
-                { label: 'Admin Manual Entry', count: stats.adminManual, color: 'bg-emerald-500' },
+                { label: 'Self-Registration', count: stats.selfReg || 0, color: 'bg-blue-500' },
+                { label: 'Bulk Upload', count: stats.bulkUpload || 0, color: 'bg-amber-500' },
+                { label: 'Admin Manual Entry', count: stats.adminManual || 0, color: 'bg-emerald-500' },
               ].map(item => (
                 <div key={item.label} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">

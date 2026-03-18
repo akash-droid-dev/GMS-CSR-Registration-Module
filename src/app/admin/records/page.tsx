@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminLayout from '@/components/AdminLayout';
-import { getAllRecords, updateRecordStatus, addAuditLog, getAdminSession } from '@/lib/store';
+import { fetchAllRecords, updateRecordStatus, addAuditLog, getAdminSession } from '@/lib/store';
 import { CATEGORIES, REGISTRATION_STATUSES, REGISTRATION_SOURCES } from '@/lib/constants';
 import type { RegistrationRecord } from '@/lib/types';
 
@@ -23,13 +23,20 @@ export default function RecordsPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const loadRecords = () => {
-    const all = getAllRecords();
-    setRecords(all);
-  };
+  const loadRecords = useCallback(async () => {
+    try {
+      const { records: all } = await fetchAllRecords();
+      setRecords(all);
+    } catch (err) {
+      console.error('Failed to load records:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  useEffect(() => { loadRecords(); }, []);
+  useEffect(() => { loadRecords(); }, [loadRecords]);
 
   useEffect(() => {
     let result = [...records];
@@ -62,7 +69,7 @@ export default function RecordsPage() {
     else setSelected(new Set(filtered.map(r => r.id)));
   };
 
-  const handleBulkVerify = () => {
+  const handleBulkVerify = async () => {
     const session = getAdminSession();
     const eligible = filtered.filter(r =>
       selected.has(r.id) &&
@@ -73,13 +80,27 @@ export default function RecordsPage() {
     const categories = new Set(eligible.map(r => r.category));
     if (categories.size > 1) { alert('Bulk verify requires all selected records to be in the same category.'); return; }
 
-    eligible.forEach(r => {
-      updateRecordStatus(r.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: session?.name || 'Admin' });
-      addAuditLog({ recordId: r.id, action: 'Bulk Verified', actor: session?.name || 'Admin', details: 'Record verified via bulk verification' });
-    });
-    setSelected(new Set());
-    loadRecords();
+    try {
+      for (const r of eligible) {
+        await updateRecordStatus(r.id, 'Verified', { verifiedAt: new Date().toISOString(), verifiedBy: session?.name || 'Admin' }, { action: 'Bulk Verified', actor: session?.name || 'Admin', details: 'Record verified via bulk verification' });
+      }
+      setSelected(new Set());
+      await loadRecords();
+    } catch (err) {
+      console.error('Bulk verify failed:', err);
+      alert('Some records failed to verify. Please try again.');
+    }
   };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -184,7 +205,7 @@ export default function RecordsPage() {
                     <td className="px-4 py-3 text-xs text-slate-600">{record.emailId}</td>
                     <td className="px-4 py-3 text-xs text-slate-600">{new Date(record.updatedAt).toLocaleDateString()}</td>
                     <td className="px-4 py-3">
-                      <button onClick={() => router.push('/admin/records/' + record.id)} className="text-blue-600 hover:text-blue-800 text-xs font-semibold">
+                      <button onClick={() => router.push('/admin/records/view?id=' + record.id)} className="text-blue-600 hover:text-blue-800 text-xs font-semibold">
                         View Details
                       </button>
                     </td>

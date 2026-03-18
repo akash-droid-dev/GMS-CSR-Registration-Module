@@ -5,7 +5,7 @@ import AadhaarAuth from '@/components/AadhaarAuth';
 import FormField from '@/components/FormField';
 import { BLOOD_GROUPS, CONTACT_PERSON_RELATIONS, KIT_SIZES, STATES, GENDERS, WOMEN_SHOE_SIZES, MEN_SHOE_SIZES } from '@/lib/constants';
 import { validateAthleteStep1, validateAthleteStep2 } from '@/lib/validators';
-import { setAuthSession, getAuthSession, setCurrentRegistration, getRecordByAadhaarAndCategory } from '@/lib/store';
+import { setAuthSession, getAuthSession, setCurrentRegistration, fetchAllRecords } from '@/lib/store';
 
 export default function AthleteRegistration() {
   const router = useRouter();
@@ -16,7 +16,29 @@ export default function AthleteRegistration() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [checkingExisting, setCheckingExisting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const checkExistingRecord = async (aadhaar: string) => {
+    setCheckingExisting(true);
+    try {
+      const { records } = await fetchAllRecords({ search: aadhaar, category: 'Athlete' });
+      const existing = records.find(r => r.aadhaarRef === aadhaar && r.category === 'Athlete');
+      if (existing && existing.status === 'Flagged for Correction') {
+        router.push('/register/correction?id=' + existing.id);
+        return true;
+      }
+      if (existing && (existing.status === 'Submitted – Pending Verification' || existing.status === 'Correction Submitted – Pending Verification' || existing.status.startsWith('Verified'))) {
+        router.push('/register/confirmation?status=' + encodeURIComponent(existing.status) + '&id=' + existing.id);
+        return true;
+      }
+    } catch (err) {
+      console.error('Failed to check existing record:', err);
+    } finally {
+      setCheckingExisting(false);
+    }
+    return false;
+  };
 
   useEffect(() => {
     const session = getAuthSession();
@@ -24,32 +46,17 @@ export default function AthleteRegistration() {
       setAuthenticated(true);
       setAadhaarRef(session.aadhaarRef);
       // Check for existing flagged record
-      const existing = getRecordByAadhaarAndCategory(session.aadhaarRef, 'Athlete');
-      if (existing && existing.status === 'Flagged for Correction') {
-        router.push('/register/correction?id=' + existing.id);
-        return;
-      }
-      if (existing && (existing.status === 'Submitted – Pending Verification' || existing.status === 'Correction Submitted – Pending Verification' || existing.status.startsWith('Verified'))) {
-        router.push('/register/confirmation?status=' + encodeURIComponent(existing.status) + '&id=' + existing.id);
-        return;
-      }
+      checkExistingRecord(session.aadhaarRef);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const handleAuthSuccess = (ref: string) => {
+  const handleAuthSuccess = async (ref: string) => {
     setAadhaarRef(ref);
     setAuthenticated(true);
     setAuthSession({ aadhaarRef: ref, route: 'athlete' });
     // Check for existing record
-    const existing = getRecordByAadhaarAndCategory(ref, 'Athlete');
-    if (existing && existing.status === 'Flagged for Correction') {
-      router.push('/register/correction?id=' + existing.id);
-      return;
-    }
-    if (existing && (existing.status === 'Submitted – Pending Verification' || existing.status === 'Correction Submitted – Pending Verification' || existing.status.startsWith('Verified'))) {
-      router.push('/register/confirmation?status=' + encodeURIComponent(existing.status) + '&id=' + existing.id);
-      return;
-    }
+    await checkExistingRecord(ref);
   };
 
   const updateField = (field: string, value: string) => {
@@ -112,6 +119,10 @@ export default function AthleteRegistration() {
 
   if (!authenticated) {
     return <AadhaarAuth route="athlete" onSuccess={handleAuthSuccess} />;
+  }
+
+  if (checkingExisting) {
+    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div>;
   }
 
   const shoeSizes = formData.gender === 'Female' ? [...WOMEN_SHOE_SIZES] : [...MEN_SHOE_SIZES];

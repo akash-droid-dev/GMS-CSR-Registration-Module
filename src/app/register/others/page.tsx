@@ -5,7 +5,7 @@ import AadhaarAuth from '@/components/AadhaarAuth';
 import FormField from '@/components/FormField';
 import { GENDERS, STATES } from '@/lib/constants';
 import { validateOthersForm } from '@/lib/validators';
-import { setAuthSession, getAuthSession, setCurrentRegistration, getRecordByAadhaarAndCategory } from '@/lib/store';
+import { setAuthSession, getAuthSession, setCurrentRegistration, fetchAllRecords } from '@/lib/store';
 import type { Category } from '@/lib/types';
 
 export default function OthersRegistration() {
@@ -17,7 +17,31 @@ export default function OthersRegistration() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [checkingExisting, setCheckingExisting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const checkExistingRecords = async (aadhaar: string, categories: Category[]): Promise<boolean> => {
+    setCheckingExisting(true);
+    try {
+      for (const cat of categories) {
+        const { records } = await fetchAllRecords({ search: aadhaar, category: cat });
+        const existing = records.find(r => r.aadhaarRef === aadhaar && r.category === cat);
+        if (existing && existing.status === 'Flagged for Correction') {
+          router.push('/register/correction?id=' + existing.id);
+          return true;
+        }
+        if (existing && (existing.status === 'Submitted – Pending Verification' || existing.status === 'Correction Submitted – Pending Verification' || existing.status.startsWith('Verified'))) {
+          router.push('/register/confirmation?status=' + encodeURIComponent(existing.status) + '&id=' + existing.id);
+          return true;
+        }
+      }
+    } catch (err) {
+      console.error('Failed to check existing records:', err);
+    } finally {
+      setCheckingExisting(false);
+    }
+    return false;
+  };
 
   useEffect(() => {
     const session = getAuthSession();
@@ -28,31 +52,18 @@ export default function OthersRegistration() {
     }
   }, []);
 
-  const handleAuthSuccess = (ref: string) => {
+  const handleAuthSuccess = async (ref: string) => {
     setAadhaarRef(ref);
     setAuthenticated(true);
     setAuthSession({ aadhaarRef: ref, route: 'others' });
     // Check for existing records in both categories
-    for (const cat of ['Support Staff', 'Technical Official'] as Category[]) {
-      const existing = getRecordByAadhaarAndCategory(ref, cat);
-      if (existing && existing.status === 'Flagged for Correction') {
-        router.push('/register/correction?id=' + existing.id);
-        return;
-      }
-    }
+    await checkExistingRecords(ref, ['Support Staff', 'Technical Official']);
   };
 
-  const handleCategorySelect = (cat: 'Support Staff' | 'Technical Official') => {
+  const handleCategorySelect = async (cat: 'Support Staff' | 'Technical Official') => {
     // Check for existing record
-    const existing = getRecordByAadhaarAndCategory(aadhaarRef, cat);
-    if (existing && existing.status === 'Flagged for Correction') {
-      router.push('/register/correction?id=' + existing.id);
-      return;
-    }
-    if (existing && (existing.status === 'Submitted – Pending Verification' || existing.status === 'Correction Submitted – Pending Verification' || existing.status.startsWith('Verified'))) {
-      router.push('/register/confirmation?status=' + encodeURIComponent(existing.status) + '&id=' + existing.id);
-      return;
-    }
+    const redirected = await checkExistingRecords(aadhaarRef, [cat]);
+    if (redirected) return;
     setSelectedCategory(cat);
     setAuthSession({ aadhaarRef, route: 'others', category: cat });
   };
@@ -91,6 +102,10 @@ export default function OthersRegistration() {
 
   if (!authenticated) {
     return <AadhaarAuth route="others" onSuccess={handleAuthSuccess} />;
+  }
+
+  if (checkingExisting) {
+    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div>;
   }
 
   // Category Selection - SCR-05
